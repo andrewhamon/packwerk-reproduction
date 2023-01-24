@@ -1,0 +1,6 @@
+enforce_dependencies: true
+enforce_privacy: false
+public_path: .
+dependencies:
+  - "."
+  - "app/helpers/meow"

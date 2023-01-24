@@ -1,24 +1,24 @@
-# README
+Packwerk seems to confuse files that have a prefix that matches an adjacent
+folder.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+In this repo, the file `app/helpers/foobar_fizz.rb` belongs to the package
+`app/helpers`, however packwerk thinks that it belongs to `app/helpers/foobar` instead. This file has a dependency on `app/helpers/meow/package.yml`, and that dependency is correctly declared in the `app/helpers` package.
 
-Things you may want to cover:
+Packwerk fails, though complaining that there is a violation in the `app/helpers/foobar` package (the wrong package). This is the error message:
 
-* Ruby version
+```
+app/helpers/foobar_fizz.rb:4:17
+Dependency violation: ::Meow::Woof belongs to 'app/helpers/meow', but 'app/helpers/foobar' does not specify a dependency on 'app/helpers/meow'.
+Are we missing an abstraction?
+Is the code making the reference, and the referenced constant, in the right packages?
 
-* System dependencies
+Inference details: this is a reference to ::Meow::Woof which seems to be defined in app/helpers/meow/woof.rb.
+To receive help interpreting or resolving this error message, see: https://github.com/Shopify/packwerk/blob/main/TROUBLESHOOT.md#Troubleshooting-violations
 
-* Configuration
 
-* Database creation
+1 offense detected
 
-* Database initialization
+No stale violations detected
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This seems to happen any time a file has a common prefix with an adjacent folder.
